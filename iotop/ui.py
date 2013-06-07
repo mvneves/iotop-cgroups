@@ -645,7 +645,7 @@ def main():
         def safe_main_loop():
             try:
                 main_loop()
-            except:
+            except Exception:
                 pass
         _profile(safe_main_loop)
     else:

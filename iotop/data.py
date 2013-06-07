@@ -38,7 +38,7 @@ ioaccounting = os.path.exists('/proc/self/io')
 try:
     from iotop.vmstat import VmStat
     vmstat_f = VmStat()
-except:
+except IOError:
     vm_event_counters = False
 else:
     vm_event_counters = True
