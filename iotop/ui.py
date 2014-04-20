@@ -171,8 +171,8 @@ class IOTopUI(object):
             poll.register(sys.stdin.fileno(), select.POLLIN | select.POLLPRI)
         while self.options.iterations is None or \
               iterations < self.options.iterations:
-            total, actual = self.process_list.refresh_processes()
-            self.refresh_display(iterations == 0, total, actual,
+            total, current = self.process_list.refresh_processes()
+            self.refresh_display(iterations == 0, total, current,
                                  self.process_list.duration)
             if self.options.iterations is not None:
                 iterations += 1
@@ -440,14 +440,14 @@ class IOTopUI(object):
             del processes[self.height - 2:]
         return list(map(format, processes))
 
-    def refresh_display(self, first_time, total, actual, duration):
+    def refresh_display(self, first_time, total, current, duration):
         summary = [
                 'Total DISK READ : %s | Total DISK WRITE : %s' % (
                 format_bandwidth(self.options, total[0], duration).rjust(14),
                 format_bandwidth(self.options, total[1], duration).rjust(14)),
-                'Actual DISK READ: %s | Actual DISK WRITE: %s' % (
-                format_bandwidth(self.options, actual[0], duration).rjust(14),
-                format_bandwidth(self.options, actual[1], duration).rjust(14))
+                'Current DISK READ: %s | Current DISK WRITE: %s' % (
+                format_bandwidth(self.options, current[0], duration).rjust(14),
+                format_bandwidth(self.options, current[1], duration).rjust(14))
         ]
 
         pid = max(0, (MAX_PID_WIDTH - 3)) * ' '

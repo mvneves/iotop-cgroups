@@ -20,10 +20,10 @@ In addition, the total I/O bandwidth read and written during the sampling
 period is displayed at the top of the interface.
 \fBTotal DISK READ\fR and \fBTotal DISK WRITE\fR values represent total read
 and write bandwidth between processes and kernel threads on the one side and
-kernel block device subsystem on the other. While \fBActual DISK READ\fR and
-\fBActual DISK WRITE\fR values represent corresponding bandwidths for actual
+kernel block device subsystem on the other. While \fBCurrent DISK READ\fR and
+\fBCurrent DISK WRITE\fR values represent corresponding bandwidths for current
 disk I/O between kernel block device subsystem and underlying hardware (HDD, SSD, etc.).
-Thus \fBTotal\fR and \fBActual\fR values may not be equal at any given moment of time
+Thus \fBTotal\fR and \fBCurrent\fR values may not be equal at any given moment of time
 due to data caching and I/O operations reordering that take place inside Linux kernel.
 .PP
 Use the left and right arrows to change the sorting, r to reverse the

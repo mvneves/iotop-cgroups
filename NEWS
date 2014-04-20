@@ -9,7 +9,7 @@ o Releases are now gpg signed with key "4096R/4D23A27E 2013-05-26"
 0.5
 ~~~
 o Adapt the display to the maximum pid width
-o Include both total and actual disk bandwidth in the summary
+o Include both total and current disk bandwidth in the summary
 o Conversion to Python 3
 o Installation to sbin instead of bin
 
