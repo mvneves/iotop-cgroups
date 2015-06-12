@@ -259,6 +259,10 @@ class ProcessInfo(DumpableObject):
             # We only monitor some users, not this one
             return False
 
+        if options.cgroups and self.get_cgroup() not in options.cgroups:
+            # We only monitor some cgroups, not this one
+            return False
+
         return True
 
     def get_uid(self):
@@ -317,6 +321,17 @@ class ProcessInfo(DumpableObject):
             parts[0] = parts[0][first_command_char:]
         cmdline = ' '.join(parts).strip()
         return safe_utf8_decode(cmdline + suffix)
+
+    def get_cgroup(self):
+        container = None
+        try:
+            proc_cgroup = open('/proc/%d/cgroup' % self.pid)
+            line = proc_cgroup.readline()
+            container = line.split(":")[2].rstrip('\n')
+        except:
+            return '{no cgroup info}'
+
+        return container
 
     def did_some_io(self, accumulated):
         if accumulated:

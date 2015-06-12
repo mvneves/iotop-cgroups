@@ -134,6 +134,7 @@ class IOTopUI(object):
         (lambda p, s: p.pid, False),
         (lambda p, s: p.ioprio_sort_key(), False),
         (lambda p, s: p.get_user(), False),
+        (lambda p, s: p.get_cgroup(), False),
         (lambda p, s: s.read_bytes, True),
         (lambda p, s: s.write_bytes - s.cancelled_write_bytes, True),
         (lambda p, s: s.swapin_delay_total, True),
@@ -408,9 +409,9 @@ class IOTopUI(object):
             else:
                 delay_stats = ' ?unavailable?  '
             pid_format = '%%%dd' % MAX_PID_WIDTH
-            line = (pid_format + ' %4s %-8s %11s %11s %s') % (
-                p.pid, p.get_ioprio(), p.get_user()[:8], read_bytes,
-                write_bytes, delay_stats)
+            line = (pid_format + ' %4s %-8s %-16s %11s %11s %s') % (
+                p.pid, p.get_ioprio(), p.get_user()[:8], p.get_cgroup()[:16],
+                read_bytes, write_bytes, delay_stats)
             cmdline = p.get_cmdline()
             if not self.options.batch:
                 remaining_length = self.width - len(line)
@@ -455,8 +456,8 @@ class IOTopUI(object):
             pid += 'PID'
         else:
             pid += 'TID'
-        titles = [pid, '  PRIO', '  USER', '     DISK READ', '  DISK WRITE',
-                  '  SWAPIN', '      IO', '    COMMAND']
+        titles = [pid, '  PRIO', '  USER', '           CGROUP', '     DISK READ',
+                  '  DISK WRITE', '  SWAPIN', '      IO', '    COMMAND']
         lines = self.get_data()
         if self.options.time:
             titles = ['    TIME'] + titles
@@ -616,6 +617,9 @@ def main():
     parser.add_option('-u', '--user', type='str', dest='users',
                       action='append', help='users to monitor [all]',
                       metavar='USER')
+    parser.add_option('-g', '--cgroup', type='str', dest='cgroups',
+                      action='append', help='cgroups to monitor [all]',
+                      metavar='CGROUP')
     parser.add_option('-P', '--processes', action='store_true',
                       dest='processes', default=False,
                       help='only show processes, not all threads')
